@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="">
+        <p>
+            <label for="">Nombre</label>
+            <input id="nombre" type="text">
+        </p>
+        <p>
+            <label for="">Precio</label>
+            <input id="precio" type="text">
+        </p>
+        <p>
+            <label for="">Stock</label>
+            <input id="stock" type="text">
+        </p>
+        <button type="button" onclick="consultar()">Consultar</button>
+        <button type="button" onclick="editar()">Editar</button>
+        <button type="button" onclick="borrar()">Borrar</button>
+        <button type="button" onclick="guardar()">Guardar</button>
+    </form>
+</body>
+
+</html>
+<script>
+    var host = "http://localhost:8081";
+    function consultar() {
+        const nombre = document.getElementById("nombre").value;
+        fetch(`${host}/producto/consultar/${nombre}`)
+            .then(res => res.json())
+            .then(res => {
+                document.getElementById("precio").value = res.price;
+                document.getElementById("stock").value = res.stock;
+            })
+    }
+
+    function guardar() {
+        // Capturar los datos
+        const nombre = document.getElementById("nombre").value;
+        const precio = document.getElementById("precio").value;
+        const stock = document.getElementById("stock").value;
+        // Hacer petición AJAX (fecth) para consumir API
+        fetch(`${host}/producto/guardar`, {
+            headers: { "content-type": "application/json" },
+            method: "POST",
+            body: JSON.stringify({ nombre, precio, stock })
+        })
+            .then(data => data.json()) // Obtener los datos
+            .then(data => alert(data.msg))  // Mostrar mensaje OK    :) 
+            .catch(error => alert(error));  // Mostrar mensaje error :(
+    }
+
+    function editar() {
+        // Capturar los datos
+        const nombre = document.getElementById("nombre").value;
+        const precio = document.getElementById("precio").value;
+        const stock = document.getElementById("stock").value;
+        // Hacer petición AJAX (fecth) para consumir API
+        fetch(`${host}/producto/editar`, {
+            headers: { "content-type": "application/json" },
+            method: "POST",
+            body: JSON.stringify({ nombre, precio, stock })
+        })
+            .then(data => data.json()) // Obtener los datos
+            .then(data => alert(data.msg))  // Mostrar mensaje OK    :) 
+            .catch(error => alert(error));  // Mostrar mensaje error :(
+    }
+
+    function borrar() {
+        const resp = confirm("Realmente desea eliminar el Producto?");
+        if (resp) {
+            // Capturar los datos
+            const nombre = document.getElementById("nombre").value;
+            // Hacer petición AJAX (fecth) para consumir API
+            fetch(`${host}/producto/eliminar`, {
+                headers: { "content-type": "application/json" },
+                method: "POST",
+                body: JSON.stringify({ nombre })
+            })
+                .then(data => data.json()) // Obtener los datos
+                .then(data => alert(data.msg))  // Mostrar mensaje OK    :) 
+                .catch(error => alert(error));  // Mostrar mensaje error :(
+        }
+    }
+</script>
