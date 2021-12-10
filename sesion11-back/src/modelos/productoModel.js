@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const productoModel = new Schema({
+const productoSchema = new Schema({
     nombre: {
         type: "string",
         unique: true,
@@ -17,4 +17,5 @@ const productoModel = new Schema({
     }
 });
 
-module.exports = mongoose.model("producto", productoModel);
+const productoModel = mongoose.model("producto", productoSchema);
+exports.productoModel = productoModel;
