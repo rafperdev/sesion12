@@ -14,10 +14,10 @@ productoRutas.post("/guardar", function (req, res) {
     const prod = new productoModel(data);
     prod.save(function (error) {
         if (error) {
-            res.send({ status: "error", msg: "ERROR: Producto NO guardado" });
+            res.send({ estado: "error", msg: "ERROR: Producto NO guardado" });
             return false;
         }
-        res.send({ status: "ok", msg: "Guardado satisfactoriamente" })
+        res.send({ estado: "ok", msg: "Guardado satisfactoriamente" })
     })
 });
 
@@ -26,7 +26,7 @@ productoRutas.post("/guardar", function (req, res) {
  * Ruta: /producto/editar
  * Método: POST
  * Datos de entrada: { nombre:"pan", precio:200, stock:52 }
- * Respuesta: { status: "ok", msg: "Editado satisfactoriamente" }
+ * Respuesta: { estado: "ok", msg: "Editado satisfactoriamente" }
  */
 productoRutas.post("/consultar", function (req, res) {
     // Captura el nombre del producto a buscar
@@ -35,13 +35,30 @@ productoRutas.post("/consultar", function (req, res) {
     productoModel.findOne({ nombre }, function (error, prod) {
         // Si hubo error
         if (error) {
-            res.send({ status: "error", msg: "Producto NO encontrado" })
+            res.send({ estado: "error", msg: "Producto NO encontrado" })
             return false;
         } else {
             if (prod !== null) {
-                res.send({ status: "ok", msg: "Producto Encontrado", data: prod })
+                res.send({ estado: "ok", msg: "Producto Encontrado", data: prod })
             } else {
-                res.send({ status: "error", msg: "Producto NO encontrado" })
+                res.send({ estado: "error", msg: "Producto NO encontrado" })
+            }
+        }
+    })
+});
+
+productoRutas.get("/listar", function (req, res) {
+    // Busca el producto en la BD
+    productoModel.find({ }, function (error, prod) {
+        // Si hubo error
+        if (error) {
+            res.send({ estado: "error", msg: "Producto NO encontrado" })
+            return false;
+        } else {
+            if (prod !== null) {
+                res.send({ estado: "ok", msg: "Producto Encontrado", data: prod })
+            } else {
+                res.send({ estado: "error", msg: "Producto NO encontrado" })
             }
         }
     })
@@ -52,7 +69,7 @@ productoRutas.post("/consultar", function (req, res) {
  * Ruta: /producto/eliminar
  * Método: POST
  * Datos de entrada: { nombre:"pan" }
- * Respuesta: { status: "ok", msg: "Producto Eliminado!" }
+ * Respuesta: { estado: "ok", msg: "Producto Eliminado!" }
  */
 productoRutas.post("/eliminar", function (req, res) {
     //Capturar los datos que vienen del cliente
@@ -67,7 +84,7 @@ productoRutas.post("/eliminar", function (req, res) {
         i++;
     }
     //Responder al cliente
-    res.send({ status: "ok", msg: "Producto Eliminado!" });
+    res.send({ estado: "ok", msg: "Producto Eliminado!" });
 })
 
 exports.productoRutas = productoRutas;

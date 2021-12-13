@@ -25,7 +25,7 @@ userRutas.post("/login", async function (req, res) {
                     usuario: user.usuario,
                     rol: user.rol
                 },
-                "misecreto"
+                process.env.JWT_SECRET_KEY
             )
             return res.status(200).send({ estado: "ok", msg: "Logueado :)", token })
         } else {
