@@ -14,6 +14,10 @@ const productoSchema = new Schema({
     stock: {
         type: "number",
         required: true
+    },
+    categoria: {
+        type: Schema.ObjectId,
+        ref: "categorias"
     }
 });
 

@@ -5,6 +5,7 @@ const { productoRutas } = require("./rutas/productoRutas");
 const { userRutas } = require("./rutas/userRutas");
 const { ventasRutas } = require("./rutas/ventasRutas");
 const mongoose = require("mongoose");
+const { categoriaRutas } = require("./rutas/categoriaRutas");
 const app = express();
 app.use(cors()); //Middleware cors
 app.use(express.json()); //Middleware json()
@@ -14,6 +15,7 @@ require("dotenv").config();
 app.use("/producto", productoRutas);
 app.use("/user", userRutas);
 app.use("/ventas", ventasRutas);
+app.use("/categoria", categoriaRutas);
 
 //Conecta a la BD tienda
 mongoose.connect(process.env.SERVER_DB_URL)

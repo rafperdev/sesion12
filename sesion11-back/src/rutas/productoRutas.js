@@ -1,6 +1,7 @@
 const { Router } = require("express");
+const { userAutorizadoGuard } = require("../guards/userAutorizadoGuard");
 const productoRutas = Router();
-const {productoModel} = require("../modelos/productoModel");
+const { productoModel } = require("../modelos/productoModel");
 
 productoRutas.get("/consultar/:name", function (req, res) {
     const prod = productoModel.find(p => p.title === req.params.name);
@@ -9,7 +10,7 @@ productoRutas.get("/consultar/:name", function (req, res) {
 /**
  * API Guardar Producto
  */
-productoRutas.post("/guardar", function (req, res) {
+productoRutas.post("/guardar", userAutorizadoGuard, function (req, res) {
     const data = req.body;
     const prod = new productoModel(data);
     prod.save(function (error) {
@@ -49,7 +50,7 @@ productoRutas.post("/consultar", function (req, res) {
 
 productoRutas.get("/listar", function (req, res) {
     // Busca el producto en la BD
-    productoModel.find({ }, function (error, prod) {
+    productoModel.find({}, function (error, prod) {
         // Si hubo error
         if (error) {
             res.send({ estado: "error", msg: "Producto NO encontrado" })

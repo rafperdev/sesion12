@@ -10,7 +10,6 @@ userRutas.post("/login", async function (req, res) {
         const { usuario, password } = req.body; //{usuario:"us1", password:"123"}        
         // Buscar en BD el usuario
         const user = await userModel.findOne({ usuario });
-        console.log(user);
         // Preguntar si existe
         if (!user) {
             return res.status(401).send({ estado: "error", msg: "Credenciales no válidas" });
@@ -27,7 +26,7 @@ userRutas.post("/login", async function (req, res) {
                 },
                 process.env.JWT_SECRET_KEY
             )
-            return res.status(200).send({ estado: "ok", msg: "Logueado :)", token })
+            return res.status(200).send({ estado: "ok", msg: "Logueado :)", token, url:"/home" })
         } else {
             return res.status(401).send({ estado: "error", msg: "Credenciales no válidas" });
         }
